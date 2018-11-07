@@ -7,8 +7,8 @@
     <ProjectGuid>{FEB0E985-25F8-4770-B9DF-7D1A1BB50A43}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BugTracker.Dal</RootNamespace>
-    <AssemblyName>BugTracker.Dal</AssemblyName>
+    <RootNamespace>BugTracker.Storage</RootNamespace>
+    <AssemblyName>BugTracker.Storage</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -39,7 +39,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SqlServerCe">
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,12 +53,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dal\DatabaseContext.cs" />
-    <Compile Include="Model\Abstract\IAuditableEntity.cs" />
-    <Compile Include="Model\Abstract\IEntityKey.cs" />
-    <Compile Include="Model\Entities\Issue.cs" />
+    <Compile Include="Database\SqlCompactDatabaseGenerator.cs" />
+    <Compile Include="Model\Issue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IssueRepository.cs" />
+    <Compile Include="Repositories\Repository.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\BugTracker.BL\BugTracker.BL.csproj">
+      <Project>{022537e3-6448-4df1-ab37-6a50f45afd65}</Project>
+      <Name>BugTracker.BL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

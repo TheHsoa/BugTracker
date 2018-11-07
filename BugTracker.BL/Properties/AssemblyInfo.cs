@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BugTracker.Model")]
+[assembly: AssemblyTitle("BugTracker.BL")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BugTracker.Model")]
+[assembly: AssemblyProduct("BugTracker.BL")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("feb0e985-25f8-4770-b9df-7d1a1bb50a43")]
+[assembly: Guid("022537e3-6448-4df1-ab37-6a50f45afd65")]
 
 // Version information for an assembly consists of the following four values:
 //

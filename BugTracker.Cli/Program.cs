@@ -1,41 +1,59 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
-using BugTracker.Dal.Dal;
-using BugTracker.Dal.Model.Entities;
-using BugTracker.DB.Database;
+using BugTracker.BL.Dal;
+using BugTracker.BL.Domain.Model;
+using BugTracker.Storage.Dal;
+using BugTracker.Storage.Repositories;
 
 namespace BugTracker.Cli
 {
     class Program
     {
         private const string ConnectionName = "BugTrackerDB";
+
         static void Main()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings[ConnectionName].ConnectionString;
-
-            SqlCompactDatabaseGenerator.GenerateDatabase(connectionString);
-
             using (var context = new DatabaseContext(ConnectionName))
             {
+                IRepository<Issue> repository = new IssueRepository(context);
+
                 var date = DateTime.Now;
                 var issue = new Issue
                 {
                     CreatedOn = date,
                     ModifiedOn = date,
-                    Title = "TestTitle",
-                    Notes = "TestNotes"
+                    Title = "TestTitle1",
+                    Notes = "TestNotes1"
                 };
 
-                context.Issue.Add(issue);
-                context.SaveChanges();
-                var issues = context.Issue.ToList();
-                var savedIssue = context.Issue.FirstOrDefault(x => x.Id == 1);
+                repository.Create(issue);
 
-                if (savedIssue != null) Console.Write(savedIssue.Notes);
+                var issues = repository.Get().ToList();
+
+                foreach (var entity in issues)
+                {
+                    Console.WriteLine($"{entity.Notes} {entity.ModifiedOn} {entity.CreatedOn}");
+                }
+
+                var savedIssue = repository.Get().FirstOrDefault(x => x.Id == 1);
+
+                if (savedIssue != null)
+                {
+                    Console.WriteLine($"{savedIssue.Notes} {savedIssue.ModifiedOn}");
+                    savedIssue.Notes = "UpdatedNotes";
+                    repository.Update(savedIssue);
+                }
+
+                var updatedIssue = repository.Get().FirstOrDefault(x => x.Id == savedIssue.Id);
+
+
+                if (updatedIssue != null)
+                {
+                    Console.WriteLine($"{updatedIssue.Notes} {updatedIssue.ModifiedOn}");
+                }
+
+                Console.ReadKey();
             }
-
-            Console.ReadKey();
         }
     }
 }
