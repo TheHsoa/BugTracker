@@ -5,6 +5,8 @@ namespace BugTracker.BL.Domain.Model
 {
     public class Issue : IEntity
     {
+        public long Id { get; }
+        
         public string Title { get; set; }
 
         public string Notes { get; set; }
@@ -13,6 +15,15 @@ namespace BugTracker.BL.Domain.Model
 
         public DateTime ModifiedOn { get; set; }
 
-        public long Id { get; set; }
+        public Issue(long id, string title, string notes, DateTime createdOn, DateTime modifiedOn)
+        {
+            Id = id;
+            Title = title;
+            Notes = notes;
+            CreatedOn = createdOn;
+            ModifiedOn = modifiedOn;
+        }
+
+        public  Issue() { }
     }
 }

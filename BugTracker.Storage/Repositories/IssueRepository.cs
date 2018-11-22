@@ -1,31 +1,37 @@
 ﻿using System;
-using System.Data.Entity;
-using System.Data.Entity.Core;
+using System.Collections.Generic;
 using System.Linq;
 using BugTracker.BL.Domain.Model;
 using BugTracker.Storage.Dal;
+using BugTracker.Storage.Extensions;
+using BugTracker.Storage.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace BugTracker.Storage.Repositories
 {
     public class IssueRepository : Repository<Issue>
     {
+        public IssueRepository(DatabaseContext context) : base(context)
+        {
+        }
+
         public override void Update(Issue entity)
         {
-            var dbIssue = Context.Issue.FirstOrDefault(x => x.Id == entity.Id);
+            var dbIssue = Context.Issues.FirstOrDefault(x => x.Id == entity.Id);
 
-            if(dbIssue == null)  throw new ObjectNotFoundException();
+            if (dbIssue == null) throw new KeyNotFoundException();
 
             dbIssue.Notes = entity.Notes;
             dbIssue.Title = entity.Title;
-            dbIssue.ModifiedOn = DateTime.UtcNow;
+            dbIssue.ModifiedOn = entity.ModifiedOn;
 
             Context.Entry(dbIssue).State = EntityState.Modified;
             Context.SaveChanges();
         }
-        
-        public override void Create(Issue entity)
+
+        public override long Create(Issue entity)
         {
-            var newIssue = new Model.Issue
+            var newIssue = new PersistenceIssue
             {
                 Title = entity.Title,
                 Notes = entity.Notes,
@@ -33,29 +39,27 @@ namespace BugTracker.Storage.Repositories
                 ModifiedOn = entity.ModifiedOn
             };
 
-            Context.Issue.Add(newIssue);
+            Context.Issues.Add(newIssue);
+
             Context.SaveChanges();
+
+            return newIssue.Id;
         }
 
-        public override IQueryable<Issue> Get()
+        public override IEnumerable<Issue> Get()
         {
-            return Context.Issue.Select(x => new Issue
-            {
-                Id = x.Id,
-                Notes = x.Notes,
-                Title = x.Title,
-                CreatedOn = x.CreatedOn,
-                ModifiedOn = x.ModifiedOn
-            });
+            return Context.Issues.AsEnumerable().Select(x => x.ToIssue());
+        }
+
+        public override Issue Get(long id)
+        {
+            return Context.Issues.Where(x => id == x.Id).AsEnumerable()
+                .Select(x => x.ToIssue()).FirstOrDefault();
         }
 
         public override void Delete(Issue entity)
         {
             throw new NotImplementedException();
-        }
-
-        public IssueRepository(DatabaseContext context) : base(context)
-        {
         }
     }
 }

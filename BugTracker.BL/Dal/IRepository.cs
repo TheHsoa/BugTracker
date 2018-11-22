@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using BugTracker.BL.Domain.Model.Abstract;
 
 namespace BugTracker.BL.Dal
@@ -6,8 +6,9 @@ namespace BugTracker.BL.Dal
     public interface IRepository<T> where T: class, IEntity
     {
         void Update(T entity);
-        void Create(T entity);
-        IQueryable<T> Get();
+        long Create(T entity);
+        T Get(long id);
+        IEnumerable<T> Get();
         void Delete(T entity);
     }
 }

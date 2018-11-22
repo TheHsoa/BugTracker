@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using BugTracker.BL.Dal;
 using BugTracker.BL.Domain.Model.Abstract;
 using BugTracker.Storage.Dal;
@@ -14,9 +14,10 @@ namespace BugTracker.Storage.Repositories
             Context = context;
         }
 
-        public abstract void Create(T entity);
+        public abstract long Create(T entity);
         public abstract void Delete(T entity);
-        public abstract IQueryable<T> Get();
+        public abstract IEnumerable<T> Get();
+        public abstract T Get(long id);
         public abstract void Update(T entity);
     }
 }

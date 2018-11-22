@@ -1,9 +1,11 @@
 ﻿using System;
 
-namespace BugTracker.Storage.Model
+namespace BugTracker.BL.Operations.Issues.Dtos
 {
-    public class Issue
+    public sealed class IssueDto
     {
+        public long Id { get; set; }
+
         public string Title { get; set; }
 
         public string Notes { get; set; }
@@ -11,7 +13,5 @@ namespace BugTracker.Storage.Model
         public DateTime CreatedOn { get; set; }
 
         public DateTime ModifiedOn { get; set; }
-
-        public long Id { get; set; }
     }
 }
