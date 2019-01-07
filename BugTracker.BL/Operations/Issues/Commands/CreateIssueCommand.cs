@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BugTracker.BL.Operations.Issues.Commands
+﻿namespace BugTracker.BL.Operations.Issues.Commands
 {
     public sealed class CreateIssueCommand
     {

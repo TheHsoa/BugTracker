@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using BugTracker.Api.Models.Extensions;
-using BugTracker.Api.Models.Issue;
-using BugTracker.BL.Operations.Issues.Dtos;
+using BugTracker.BL.Domain.Model;
+using BugTracker.BL.Operations.Issues.Commands;
 using BugTracker.BL.Operations.Issues.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +10,12 @@ namespace BugTracker.Api.Controllers
     public class IssuesController : Controller
     {
         private readonly ICreateIssueOperationService _createIssueOperationService;
-        private readonly IUpdateIssueOperationService _updateIssueOperationService;
         private readonly IGetIssueOperationService _getIssueOperationService;
-        public IssuesController(ICreateIssueOperationService createIssueOperationService, IUpdateIssueOperationService updateIssueOperationService, IGetIssueOperationService getIssueOperationService)
+        private readonly IUpdateIssueOperationService _updateIssueOperationService;
+
+        public IssuesController(ICreateIssueOperationService createIssueOperationService,
+            IUpdateIssueOperationService updateIssueOperationService,
+            IGetIssueOperationService getIssueOperationService)
         {
             _createIssueOperationService = createIssueOperationService;
             _updateIssueOperationService = updateIssueOperationService;
@@ -22,36 +24,32 @@ namespace BugTracker.Api.Controllers
 
         // GET api/issues/5
         [HttpGet("{id}")]
-        public ActionResult<IssueDto> Get(long id)
+        public ActionResult<Issue> Get(long id)
         {
             return _getIssueOperationService.Get(id);
         }
 
         // GET api/issues/
         [HttpGet]
-        public ActionResult<IEnumerable<IssueDto>> Get()
+        public ActionResult<IEnumerable<Issue>> Get()
         {
             return Ok(_getIssueOperationService.Get());
         }
 
         // POST api/issues
         [HttpPost]
-        public ActionResult<IssueDto> Create([FromBody] CreateIssueDto createIssueDto)
+        public ActionResult<Issue> Create([FromBody] CreateIssueCommand createIssueCommand)
         {
-            var command = createIssueDto.ToCreateIssueCommand();
-
-            var createdIssueId = _createIssueOperationService.Create(command);
+            var createdIssueId = _createIssueOperationService.Create(createIssueCommand);
 
             return Get(createdIssueId);
         }
 
-        // PUT api/issues/5
-        [HttpPut("{id}")]
-        public IActionResult Update(long id, [FromBody] UpdateIssueDto updateIssueDto)
+        // PATCH api/issues/5
+        [HttpPatch("{id}")]
+        public IActionResult Update(long id, [FromBody] UpdateIssueCommand updateIssueCommand)
         {
-            var command = updateIssueDto.ToUpdateIssueCommand();
-
-            _updateIssueOperationService.Update(id, command);
+            _updateIssueOperationService.Update(id, updateIssueCommand);
 
             return NoContent();
         }

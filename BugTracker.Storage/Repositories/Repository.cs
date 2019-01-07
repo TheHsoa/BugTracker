@@ -15,7 +15,6 @@ namespace BugTracker.Storage.Repositories
         }
 
         public abstract long Create(T entity);
-        public abstract void Delete(T entity);
         public abstract IEnumerable<T> Get();
         public abstract T Get(long id);
         public abstract void Update(T entity);

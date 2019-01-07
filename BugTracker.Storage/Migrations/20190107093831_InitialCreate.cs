@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BugTracker.Storage.Migrations
@@ -16,7 +17,7 @@ namespace BugTracker.Storage.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(maxLength: 128, nullable: false),
                     Notes = table.Column<string>(maxLength: 1024, nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),

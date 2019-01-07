@@ -7,9 +7,9 @@ namespace BugTracker.Storage.Dal
     {
         public DbSet<PersistenceIssue> Issues { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options)
+            : base(options)
         {
-            optionsBuilder.UseSqlite("Data Source=./BugTracker.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

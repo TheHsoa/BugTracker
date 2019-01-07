@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using BugTracker.BL.Operations.Issues.Dtos;
+using BugTracker.BL.Domain.Model;
 
 namespace BugTracker.BL.Operations.Issues.Services
 {
     public interface IGetIssueOperationService
     {
-        IssueDto Get(long id);
-        IEnumerable<IssueDto> Get();
+        Issue Get(long id);
+        IEnumerable<Issue> Get();
 
     }
 }

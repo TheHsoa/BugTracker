@@ -56,10 +56,5 @@ namespace BugTracker.Storage.Repositories
             return Context.Issues.Where(x => id == x.Id).AsEnumerable()
                 .Select(x => x.ToIssue()).FirstOrDefault();
         }
-
-        public override void Delete(Issue entity)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using BugTracker.BL.Dal;
 using BugTracker.BL.Domain.Model;
-using BugTracker.BL.Extensions;
-using BugTracker.BL.Operations.Issues.Dtos;
 using BugTracker.BL.Operations.Issues.Services;
 
 namespace BugTracker.Operations.Issues.OperationServices
@@ -17,18 +14,18 @@ namespace BugTracker.Operations.Issues.OperationServices
             _repository = repository;
         }
 
-        public IssueDto Get(long id)
+        public Issue Get(long id)
         {
             var issue = _repository.Get(id);
 
-            return issue.ToIssueDto();
+            return issue;
         }
 
-        public IEnumerable<IssueDto> Get()
+        public IEnumerable<Issue> Get()
         {
             var issues = _repository.Get();
 
-            return issues.Select(x => x.ToIssueDto());
+            return issues;
         }
     }
 }

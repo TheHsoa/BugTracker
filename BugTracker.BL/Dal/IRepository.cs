@@ -9,6 +9,5 @@ namespace BugTracker.BL.Dal
         long Create(T entity);
         T Get(long id);
         IEnumerable<T> Get();
-        void Delete(T entity);
     }
 }
