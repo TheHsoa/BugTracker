@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Transactions;
 using BugTracker.BL.Dal;
 using BugTracker.BL.Domain.Model;
 using BugTracker.BL.Operations.Issues.Commands;
@@ -17,13 +18,18 @@ namespace BugTracker.Operations.Issues.OperationServices
 
         public void Update(long id, UpdateIssueCommand command)
         {
-            var issue = _repository.Get(id);
+            using (var scope = new TransactionScope())
+            {
+                var issue = _repository.Get(id);
 
-            issue.Notes = command.Notes;
-            issue.Title = command.Title;
-            issue.ModifiedOn = DateTime.Now;
+                issue.Notes = command.Notes;
+                issue.Title = command.Title;
+                issue.ModifiedOn = DateTime.Now;
 
-            _repository.Update(issue);
+                _repository.Update(issue);
+
+                scope.Complete();
+            }
         }
     }
 }
