@@ -46,10 +46,10 @@ namespace BugTracker.Api.Controllers
         }
 
         // PATCH api/issues/5
-        [HttpPatch("{id}")]
-        public IActionResult Update(long id, [FromBody] UpdateIssueCommand updateIssueCommand)
+        [HttpPatch]
+        public IActionResult Update([FromBody] UpdateIssueCommand updateIssueCommand)
         {
-            _updateIssueOperationService.Update(id, updateIssueCommand);
+            _updateIssueOperationService.Update(updateIssueCommand);
 
             return NoContent();
         }

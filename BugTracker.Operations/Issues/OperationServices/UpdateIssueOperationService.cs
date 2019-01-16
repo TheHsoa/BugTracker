@@ -16,11 +16,11 @@ namespace BugTracker.Operations.Issues.OperationServices
             _repository = repository;
         }
 
-        public void Update(long id, UpdateIssueCommand command)
+        public void Update(UpdateIssueCommand command)
         {
             using (var scope = new TransactionScope())
             {
-                var issue = _repository.Get(id);
+                var issue = _repository.Get(command.Id);
 
                 issue.Notes = command.Notes;
                 issue.Title = command.Title;

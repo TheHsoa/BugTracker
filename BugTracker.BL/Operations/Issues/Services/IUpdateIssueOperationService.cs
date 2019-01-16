@@ -4,7 +4,6 @@ namespace BugTracker.BL.Operations.Issues.Services
 {
     public interface IUpdateIssueOperationService
     {
-        void Update(long id, UpdateIssueCommand command);
-
+        void Update(UpdateIssueCommand command);
     }
 }
