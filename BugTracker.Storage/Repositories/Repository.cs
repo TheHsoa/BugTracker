@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using BugTracker.BL.Dal;
+using BugTracker.BL.Domain;
 using BugTracker.BL.Domain.Model.Abstract;
 using BugTracker.Storage.Dal;
 
 namespace BugTracker.Storage.Repositories
 {
-    public abstract class Repository<T> : IRepository<T> where T : class, IEntity
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
         protected readonly DatabaseContext Context;
 
@@ -14,9 +15,9 @@ namespace BugTracker.Storage.Repositories
             Context = context;
         }
 
-        public abstract long Create(T entity);
-        public abstract IEnumerable<T> Get();
-        public abstract T Get(long id);
-        public abstract void Update(T entity);
+        public abstract long Create(TEntity entity);
+        public abstract IEnumerable<TEntity> Get();
+        public abstract TEntity Get(EntityReference<TEntity> id);
+        public abstract void Update(TEntity entity);
     }
 }

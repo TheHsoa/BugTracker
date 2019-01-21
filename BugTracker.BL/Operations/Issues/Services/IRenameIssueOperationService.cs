@@ -2,8 +2,8 @@
 
 namespace BugTracker.BL.Operations.Issues.Services
 {
-    public interface IUpdateIssueOperationService
+    public interface IRenameIssueOperationService
     {
-        void Update(UpdateIssueCommand command);
+        void Rename(RenameIssueCommand command);
     }
 }

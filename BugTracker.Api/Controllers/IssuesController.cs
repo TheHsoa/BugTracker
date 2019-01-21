@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using BugTracker.Api.Binders;
+using BugTracker.BL.Domain;
 using BugTracker.BL.Domain.Model;
 using BugTracker.BL.Operations.Issues.Commands;
+using BugTracker.BL.Operations.Issues.Commands.Abstract;
 using BugTracker.BL.Operations.Issues.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,14 +14,17 @@ namespace BugTracker.Api.Controllers
     {
         private readonly ICreateIssueOperationService _createIssueOperationService;
         private readonly IGetIssueOperationService _getIssueOperationService;
-        private readonly IUpdateIssueOperationService _updateIssueOperationService;
+        private readonly IRenameIssueOperationService _renameIssueOperationService;
+        private readonly IAddNoteToIssueOperationService _addNoteIssueOperationService;
 
         public IssuesController(ICreateIssueOperationService createIssueOperationService,
-            IUpdateIssueOperationService updateIssueOperationService,
+            IRenameIssueOperationService renameIssueIssueOperationService,
+            IAddNoteToIssueOperationService addNoteIssueOperationService,
             IGetIssueOperationService getIssueOperationService)
         {
             _createIssueOperationService = createIssueOperationService;
-            _updateIssueOperationService = updateIssueOperationService;
+            _renameIssueOperationService = renameIssueIssueOperationService;
+            _addNoteIssueOperationService = addNoteIssueOperationService;
             _getIssueOperationService = getIssueOperationService;
         }
 
@@ -26,7 +32,7 @@ namespace BugTracker.Api.Controllers
         [HttpGet("{id}")]
         public ActionResult<Issue> Get(long id)
         {
-            return _getIssueOperationService.Get(id);
+            return _getIssueOperationService.Get(id.ToEntityReference<Issue>());
         }
 
         // GET api/issues/
@@ -38,20 +44,30 @@ namespace BugTracker.Api.Controllers
 
         // POST api/issues
         [HttpPost]
-        public ActionResult<Issue> Create([FromBody] CreateIssueCommand createIssueCommand)
+        public ActionResult<Issue> Create([ModelBinder(typeof(CreateIssueCommandBinder))] CreateIssueCommand createIssueCommand)
         {
-            var createdIssueId = _createIssueOperationService.Create(createIssueCommand);
+            if (createIssueCommand == null) return BadRequest("Unknown command in body");
 
+            var createdIssueId = _createIssueOperationService.Create(createIssueCommand);
+            
             return Get(createdIssueId);
         }
 
         // PATCH api/issues/5
         [HttpPatch]
-        public IActionResult Update([FromBody] UpdateIssueCommand updateIssueCommand)
+        public IActionResult Update([ModelBinder(typeof(UpdateIssueCommandBinder))] IUpdateIssueCommand updateIssueCommand)
         {
-            _updateIssueOperationService.Update(updateIssueCommand);
-
-            return NoContent();
+            switch (updateIssueCommand)
+            {
+                case RenameIssueCommand issueCommand:
+                    _renameIssueOperationService.Rename(issueCommand);
+                    return NoContent();
+                case AddNoteToIssueCommand command:
+                    _addNoteIssueOperationService.AddNote(command);
+                    return NoContent();
+                default:
+                    return BadRequest("Unknown command in body");
+            }
         }
     }
 }

@@ -7,13 +7,13 @@ namespace BugTracker.BL.Domain.Model
     {
         public long Id { get; }
         
-        public string Title { get; set; }
+        public string Title { get; }
 
-        public string Notes { get; set; }
+        public string Notes { get; }
 
-        public DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; }
 
-        public DateTime ModifiedOn { get; set; }
+        public DateTime ModifiedOn { get; }
 
         public Issue(long id, string title, string notes, DateTime createdOn, DateTime modifiedOn)
         {
@@ -23,7 +23,13 @@ namespace BugTracker.BL.Domain.Model
             CreatedOn = createdOn;
             ModifiedOn = modifiedOn;
         }
-
-        public  Issue() { }
+        public Issue(string title, string notes, DateTime createdOn, DateTime modifiedOn)
+        {
+            Id = 0;
+            Title = title;
+            Notes = notes;
+            CreatedOn = createdOn;
+            ModifiedOn = modifiedOn;
+        }
     }
 }

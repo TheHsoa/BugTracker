@@ -22,14 +22,8 @@ namespace BugTracker.Operations.Issues.OperationServices
             using (var scope = new TransactionScope())
             {
                 var createdOn = DateTime.Now;
-                
-                var createdIssueId = _repository.Create(new Issue
-                {
-                    Title = command.Title,
-                    Notes = command.Notes,
-                    CreatedOn = createdOn,
-                    ModifiedOn = createdOn
-                });
+
+                var createdIssueId = _repository.Create(new Issue(command.Title, command.Notes, createdOn, modifiedOn: createdOn));
 
                 scope.Complete();
 

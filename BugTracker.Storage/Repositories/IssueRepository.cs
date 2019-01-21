@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using BugTracker.BL.Domain;
 using BugTracker.BL.Domain.Model;
 using BugTracker.Storage.Dal;
 using BugTracker.Storage.Extensions;
 using BugTracker.Storage.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace BugTracker.Storage.Repositories
 {
@@ -25,7 +24,8 @@ namespace BugTracker.Storage.Repositories
             dbIssue.Title = entity.Title;
             dbIssue.ModifiedOn = entity.ModifiedOn;
 
-            Context.Entry(dbIssue).State = EntityState.Modified;
+            Context.Issues.Update(dbIssue);
+
             Context.SaveChanges();
         }
 
@@ -51,9 +51,9 @@ namespace BugTracker.Storage.Repositories
             return Context.Issues.AsEnumerable().Select(x => x.ToIssue());
         }
 
-        public override Issue Get(long id)
+        public override Issue Get(EntityReference<Issue> issueEntityReference)
         {
-            return Context.Issues.Where(x => id == x.Id).AsEnumerable()
+            return Context.Issues.Where(x => issueEntityReference.Id == x.Id).AsEnumerable()
                 .Select(x => x.ToIssue()).FirstOrDefault();
         }
     }
