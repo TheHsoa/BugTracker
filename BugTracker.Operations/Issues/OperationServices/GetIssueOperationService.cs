@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Transactions;
 using BugTracker.BL.Dal;
+using BugTracker.BL.Domain;
 using BugTracker.BL.Domain.Model;
 using BugTracker.BL.Operations.Issues.Services;
 
@@ -15,11 +16,11 @@ namespace BugTracker.Operations.Issues.OperationServices
             _repository = repository;
         }
 
-        public Issue Get(long id)
+        public Issue Get(EntityReference<Issue> issueReference)
         {
             using (var scope = new TransactionScope())
             {
-                var issue = _repository.Get(id);
+                var issue = _repository.Get(issueReference);
 
                 scope.Complete();
 

@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using BugTracker.BL.Domain;
 using BugTracker.BL.Domain.Model.Abstract;
 
 namespace BugTracker.BL.Dal
 {
-    public interface IRepository<T> where T: class, IEntity
+    public interface IRepository<TEntity> where TEntity: class, IEntity
     {
-        void Update(T entity);
-        long Create(T entity);
-        T Get(long id);
-        IEnumerable<T> Get();
+        void Update(TEntity entity);
+        long Create(TEntity entity);
+        TEntity Get(EntityReference<TEntity> entityReference);
+        IEnumerable<TEntity> Get();
     }
 }

@@ -19,7 +19,8 @@ namespace BugTracker.Api.DI
                     options.UseSqlServer(configuration.GetConnectionString("BugTrackerDatabase")))
                 .AddScoped<IRepository<Issue>, IssueRepository>()
                 .AddScoped<ICreateIssueOperationService, CreateIssueOperationService>()
-                .AddScoped<IUpdateIssueOperationService, UpdateIssueOperationService>()
+                .AddScoped<IRenameIssueOperationService, RenameIssueOperationService>()
+                .AddScoped<IAddNoteToIssueOperationService, AddNoteToIssueOperationService>()
                 .AddScoped<IGetIssueOperationService, GetIssueOperationService>();
         }
     }
