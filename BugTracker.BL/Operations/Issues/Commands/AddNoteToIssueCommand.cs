@@ -7,10 +7,10 @@ namespace BugTracker.BL.Operations.Issues.Commands
         public long Id { get; }
         public string Note { get; }
 
-        public AddNoteToIssueCommand(long id, string notes)
+        public AddNoteToIssueCommand(long id, string note)
         {
             Id = id;
-            Note = notes;
+            Note = note;
         }
     }
 }
