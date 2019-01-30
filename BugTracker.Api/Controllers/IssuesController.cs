@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BugTracker.Api.Binders;
 using BugTracker.BL.Domain;
 using BugTracker.BL.Domain.Model;
 using BugTracker.BL.Operations.Issues.Commands;
@@ -12,10 +11,10 @@ namespace BugTracker.Api.Controllers
     [Route("api/issues")]
     public class IssuesController : Controller
     {
+        private readonly IAddNoteToIssueOperationService _addNoteIssueOperationService;
         private readonly ICreateIssueOperationService _createIssueOperationService;
         private readonly IGetIssueOperationService _getIssueOperationService;
         private readonly IRenameIssueOperationService _renameIssueOperationService;
-        private readonly IAddNoteToIssueOperationService _addNoteIssueOperationService;
 
         public IssuesController(ICreateIssueOperationService createIssueOperationService,
             IRenameIssueOperationService renameIssueIssueOperationService,
@@ -44,26 +43,24 @@ namespace BugTracker.Api.Controllers
 
         // POST api/issues
         [HttpPost]
-        public ActionResult<Issue> Create([ModelBinder(typeof(CreateIssueCommandBinder))] CreateIssueCommand createIssueCommand)
+        public ActionResult<Issue> Create(CreateIssueCommand createIssueCommand)
         {
-            if (createIssueCommand == null) return BadRequest("Unknown command in body");
-
             var createdIssueId = _createIssueOperationService.Create(createIssueCommand);
-            
+
             return Get(createdIssueId);
         }
 
         // PATCH api/issues/5
         [HttpPatch]
-        public IActionResult Update([ModelBinder(typeof(UpdateIssueCommandBinder))] IUpdateIssueCommand updateIssueCommand)
+        public IActionResult Update(IUpdateIssueCommand updateIssueCommand)
         {
             switch (updateIssueCommand)
             {
                 case RenameIssueCommand issueCommand:
                     _renameIssueOperationService.Rename(issueCommand);
                     return NoContent();
-                case AddNoteToIssueCommand command:
-                    _addNoteIssueOperationService.AddNote(command);
+                case AddNoteToIssueCommand issueCommand:
+                    _addNoteIssueOperationService.AddNote(issueCommand);
                     return NoContent();
                 default:
                     return BadRequest("Unknown command in body");
