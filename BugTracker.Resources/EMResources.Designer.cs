@@ -70,11 +70,29 @@ namespace BugTracker.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} entity field &quot;{1}&quot; length must be less than {2} characters.
+        /// </summary>
+        public static string EntityPropertyLengthLessThan {
+            get {
+                return ResourceManager.GetString("EntityPropertyLengthLessThan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Length of the &quot;{0}&quot; field must be less than {1} characters.
+        /// </summary>
+        public static string PropertyLengthLessThan {
+            get {
+                return ResourceManager.GetString("PropertyLengthLessThan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field {0} must be specified.
         /// </summary>
-        public static string FieldMustNotBeNullOrEmpty {
+        public static string PropertyMustNotBeNullOrEmpty {
             get {
-                return ResourceManager.GetString("FieldMustNotBeNullOrEmpty", resourceCulture);
+                return ResourceManager.GetString("PropertyMustNotBeNullOrEmpty", resourceCulture);
             }
         }
     }

@@ -25,7 +25,9 @@ namespace BugTracker.Api.DI
                 .AddScoped<IRenameIssueOperationService, RenameIssueOperationService>()
                 .AddScoped<IAddNoteToIssueOperationService, AddNoteToIssueOperationService>()
                 .AddScoped<IGetIssueOperationService, GetIssueOperationService>()
-                .AddScoped<ICommandValidator<AddNoteToIssueCommand>, AddNoteCommandToIssueValidator>();
+                .AddScoped<ICommandValidator<AddNoteToIssueCommand>, AddNoteToIssueCommandValidator>()
+                .AddScoped<ICommandValidator<CreateIssueCommand>, CreateIssueCommandValidator>()
+                .AddScoped<ICommandValidator<RenameIssueCommand>, RenameIssueCommandValidator>();
         }
     }
 }

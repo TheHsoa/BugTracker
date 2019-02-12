@@ -17,19 +17,25 @@ namespace BugTracker.Api.Controllers
         private readonly IGetIssueOperationService _getIssueOperationService;
         private readonly IRenameIssueOperationService _renameIssueOperationService;
 
-        private readonly ICommandValidator<AddNoteToIssueCommand> _addNoteIssueCommandValidator;
+        private readonly ICommandValidator<AddNoteToIssueCommand> _addNoteToIssueCommandValidator;
+        private readonly ICommandValidator<CreateIssueCommand> _createIssueCommandValidator;
+        private readonly ICommandValidator<RenameIssueCommand> _renameIssueCommandValidator;
 
         public IssuesController(ICreateIssueOperationService createIssueOperationService,
             IRenameIssueOperationService renameIssueIssueOperationService,
             IAddNoteToIssueOperationService addNoteIssueOperationService,
             IGetIssueOperationService getIssueOperationService,
-            ICommandValidator<AddNoteToIssueCommand> addNoteIssueCommandValidator)
+            ICommandValidator<AddNoteToIssueCommand> addNoteToIssueCommandValidator,
+            ICommandValidator<CreateIssueCommand> createIssueCommandValidator,
+            ICommandValidator<RenameIssueCommand> renameIssueCommandValidator)
         {
             _createIssueOperationService = createIssueOperationService;
             _renameIssueOperationService = renameIssueIssueOperationService;
             _addNoteIssueOperationService = addNoteIssueOperationService;
             _getIssueOperationService = getIssueOperationService;
-            _addNoteIssueCommandValidator = addNoteIssueCommandValidator;
+            _addNoteToIssueCommandValidator = addNoteToIssueCommandValidator;
+            _createIssueCommandValidator = createIssueCommandValidator;
+            _renameIssueCommandValidator = renameIssueCommandValidator;
         }
 
         // GET api/issues/5
@@ -50,6 +56,7 @@ namespace BugTracker.Api.Controllers
         [HttpPost]
         public ActionResult<Issue> Create(CreateIssueCommand createIssueCommand)
         {
+            _createIssueCommandValidator.Validate(createIssueCommand);
             var createdIssueId = _createIssueOperationService.Create(createIssueCommand);
 
             return Get(createdIssueId);
@@ -61,11 +68,12 @@ namespace BugTracker.Api.Controllers
         {
             switch (updateIssueCommand)
             {
-                case RenameIssueCommand issueCommand:
-                    _renameIssueOperationService.Rename(issueCommand);
+                case RenameIssueCommand command:
+                    _renameIssueCommandValidator.Validate(command);
+                    _renameIssueOperationService.Rename(command);
                     return NoContent();
                 case AddNoteToIssueCommand command:
-                    _addNoteIssueCommandValidator.Validate(command);
+                    _addNoteToIssueCommandValidator.Validate(command);
                     _addNoteIssueOperationService.AddNote(command);
                     return NoContent();
                 default:

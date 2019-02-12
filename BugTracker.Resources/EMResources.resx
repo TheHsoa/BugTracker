@@ -120,7 +120,13 @@
   <data name="EntityNotFound" xml:space="preserve">
     <value>Couldn't found {0} entity with id {1}</value>
   </data>
-  <data name="FieldMustNotBeNullOrEmpty" xml:space="preserve">
+  <data name="EntityPropertyLengthLessThan" xml:space="preserve">
+    <value>{0} entity field "{1}" length must be less than {2} characters</value>
+  </data>
+  <data name="PropertyLengthLessThan" xml:space="preserve">
+    <value>Length of the "{0}" field must be less than {1} characters</value>
+  </data>
+  <data name="PropertyMustNotBeNullOrEmpty" xml:space="preserve">
     <value>Field {0} must be specified</value>
   </data>
 </root>

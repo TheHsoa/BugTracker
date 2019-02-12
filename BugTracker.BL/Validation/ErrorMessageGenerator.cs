@@ -6,7 +6,7 @@
         {
             if (message == null) message = string.Empty;
             if (message != string.Empty) message += "; ";
-            if (string.IsNullOrEmpty(newMessage)) message += newMessage;
+            if (!string.IsNullOrEmpty(newMessage)) message += newMessage;
 
             return message;
         }
