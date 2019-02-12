@@ -1,4 +1,5 @@
 ﻿using BugTracker.Api.DI;
+using BugTracker.Api.Middleware.ErrorHandling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,12 +29,9 @@ namespace BugTracker.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseHsts();
-            }
 
             app.UseHttpsRedirection();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseMvc();
         }
     }

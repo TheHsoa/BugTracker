@@ -3,7 +3,9 @@ using System.Transactions;
 using BugTracker.BL.Dal;
 using BugTracker.BL.Domain;
 using BugTracker.BL.Domain.Model;
+using BugTracker.BL.Exceptions;
 using BugTracker.BL.Operations.Issues.Services;
+using BugTracker.Resources;
 
 namespace BugTracker.Operations.Issues.OperationServices
 {
@@ -21,6 +23,8 @@ namespace BugTracker.Operations.Issues.OperationServices
             using (var scope = new TransactionScope())
             {
                 var issue = _repository.Get(issueReference);
+
+                if (issue == null) throw new EntityNotFoundException(string.Format(EMResources.EntityNotFound, typeof(Issue).Name, issueReference.Id));
 
                 scope.Complete();
 

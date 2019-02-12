@@ -5,6 +5,7 @@ using BugTracker.BL.Domain.Model;
 using BugTracker.BL.Operations.Issues.Commands;
 using BugTracker.BL.Operations.Issues.Commands.Abstract;
 using BugTracker.BL.Operations.Issues.Services;
+using BugTracker.BL.Validation.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BugTracker.Api.Controllers
@@ -17,15 +18,19 @@ namespace BugTracker.Api.Controllers
         private readonly IRenameIssueOperationService _renameIssueOperationService;
         private readonly IAddNoteToIssueOperationService _addNoteIssueOperationService;
 
+        private readonly ICommandValidator<AddNoteToIssueCommand> _addNoteIssueCommandValidator;
+
         public IssuesController(ICreateIssueOperationService createIssueOperationService,
             IRenameIssueOperationService renameIssueIssueOperationService,
             IAddNoteToIssueOperationService addNoteIssueOperationService,
-            IGetIssueOperationService getIssueOperationService)
+            IGetIssueOperationService getIssueOperationService,
+            ICommandValidator<AddNoteToIssueCommand> addNoteIssueCommandValidator)
         {
             _createIssueOperationService = createIssueOperationService;
             _renameIssueOperationService = renameIssueIssueOperationService;
             _addNoteIssueOperationService = addNoteIssueOperationService;
             _getIssueOperationService = getIssueOperationService;
+            _addNoteIssueCommandValidator = addNoteIssueCommandValidator;
         }
 
         // GET api/issues/5
@@ -35,7 +40,7 @@ namespace BugTracker.Api.Controllers
             return _getIssueOperationService.Get(id.ToEntityReference<Issue>());
         }
 
-        // GET api/issues/
+        // GET api/issues
         [HttpGet]
         public ActionResult<IEnumerable<Issue>> Get()
         {
@@ -53,7 +58,7 @@ namespace BugTracker.Api.Controllers
             return Get(createdIssueId);
         }
 
-        // PATCH api/issues/5
+        // PATCH api/issues
         [HttpPatch]
         public IActionResult Update([ModelBinder(typeof(UpdateIssueCommandBinder))] IUpdateIssueCommand updateIssueCommand)
         {
@@ -63,6 +68,7 @@ namespace BugTracker.Api.Controllers
                     _renameIssueOperationService.Rename(issueCommand);
                     return NoContent();
                 case AddNoteToIssueCommand command:
+                    _addNoteIssueCommandValidator.Validate(command);
                     _addNoteIssueOperationService.AddNote(command);
                     return NoContent();
                 default:
