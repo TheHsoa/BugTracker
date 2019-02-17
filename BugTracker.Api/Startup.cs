@@ -1,5 +1,6 @@
 ﻿using BugTracker.Api.DI;
 using BugTracker.Api.Infrastructure.BinderProviders;
+using BugTracker.Api.Middleware.ErrorHandling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,7 @@ namespace BugTracker.Api
                 app.UseHsts();
 
             app.UseHttpsRedirection();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseMvc();
         }
     }

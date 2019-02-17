@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BugTracker.BL\BugTracker.BL.csproj" />
+    <ProjectReference Include="..\BugTracker.Resources\BugTracker.Resources.csproj" />
   </ItemGroup>
 
 </Project>

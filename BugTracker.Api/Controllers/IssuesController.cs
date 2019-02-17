@@ -4,6 +4,7 @@ using BugTracker.BL.Domain.Model;
 using BugTracker.BL.Operations.Issues.Commands;
 using BugTracker.BL.Operations.Issues.Commands.Abstract;
 using BugTracker.BL.Operations.Issues.Services;
+using BugTracker.BL.Validation.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BugTracker.Api.Controllers
@@ -16,15 +17,25 @@ namespace BugTracker.Api.Controllers
         private readonly IGetIssueOperationService _getIssueOperationService;
         private readonly IRenameIssueOperationService _renameIssueOperationService;
 
+        private readonly ICommandValidator<AddNoteToIssueCommand> _addNoteToIssueCommandValidator;
+        private readonly ICommandValidator<CreateIssueCommand> _createIssueCommandValidator;
+        private readonly ICommandValidator<RenameIssueCommand> _renameIssueCommandValidator;
+
         public IssuesController(ICreateIssueOperationService createIssueOperationService,
             IRenameIssueOperationService renameIssueIssueOperationService,
             IAddNoteToIssueOperationService addNoteIssueOperationService,
-            IGetIssueOperationService getIssueOperationService)
+            IGetIssueOperationService getIssueOperationService,
+            ICommandValidator<AddNoteToIssueCommand> addNoteToIssueCommandValidator,
+            ICommandValidator<CreateIssueCommand> createIssueCommandValidator,
+            ICommandValidator<RenameIssueCommand> renameIssueCommandValidator)
         {
             _createIssueOperationService = createIssueOperationService;
             _renameIssueOperationService = renameIssueIssueOperationService;
             _addNoteIssueOperationService = addNoteIssueOperationService;
             _getIssueOperationService = getIssueOperationService;
+            _addNoteToIssueCommandValidator = addNoteToIssueCommandValidator;
+            _createIssueCommandValidator = createIssueCommandValidator;
+            _renameIssueCommandValidator = renameIssueCommandValidator;
         }
 
         // GET api/issues/5
@@ -34,7 +45,7 @@ namespace BugTracker.Api.Controllers
             return _getIssueOperationService.Get(id.ToEntityReference<Issue>());
         }
 
-        // GET api/issues/
+        // GET api/issues
         [HttpGet]
         public ActionResult<IEnumerable<Issue>> Get()
         {
@@ -45,22 +56,25 @@ namespace BugTracker.Api.Controllers
         [HttpPost]
         public ActionResult<Issue> Create(CreateIssueCommand createIssueCommand)
         {
+            _createIssueCommandValidator.Validate(createIssueCommand);
             var createdIssueId = _createIssueOperationService.Create(createIssueCommand);
 
             return Get(createdIssueId);
         }
 
-        // PATCH api/issues/5
+        // PATCH api/issues
         [HttpPatch]
         public IActionResult Update(IUpdateIssueCommand updateIssueCommand)
         {
             switch (updateIssueCommand)
             {
-                case RenameIssueCommand issueCommand:
-                    _renameIssueOperationService.Rename(issueCommand);
+                case RenameIssueCommand command:
+                    _renameIssueCommandValidator.Validate(command);
+                    _renameIssueOperationService.Rename(command);
                     return NoContent();
-                case AddNoteToIssueCommand issueCommand:
-                    _addNoteIssueOperationService.AddNote(issueCommand);
+                case AddNoteToIssueCommand command:
+                    _addNoteToIssueCommandValidator.Validate(command);
+                    _addNoteIssueOperationService.AddNote(command);
                     return NoContent();
                 default:
                     return BadRequest("Unknown command in body");
