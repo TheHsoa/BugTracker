@@ -21,7 +21,7 @@ namespace BugTracker.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(opts => opts.ModelBinderProviders.Add(new IssueCommandBinderProvider()))
+            services.AddMvc(opts => opts.ModelBinderProviders.Insert(0, new IssueCommandBinderProvider()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.ConfigureServices(Configuration);
         }
