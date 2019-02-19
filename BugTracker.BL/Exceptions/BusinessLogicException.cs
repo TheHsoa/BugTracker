@@ -1,10 +1,8 @@
-﻿using System.Net;
-
-namespace BugTracker.BL.Exceptions
+﻿namespace BugTracker.BL.Exceptions
 {
-    public class BusinessLogicException : BaseApplicationException
+    public class BusinessLogicException : BugTrackerApplicationException
     {
-        public BusinessLogicException(string message) : base(message, HttpStatusCode.BadRequest)
+        public BusinessLogicException(string message) : base(message)
         {
         }
     }

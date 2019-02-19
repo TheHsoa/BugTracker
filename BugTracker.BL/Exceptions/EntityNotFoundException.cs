@@ -1,10 +1,8 @@
-﻿using System.Net;
-
-namespace BugTracker.BL.Exceptions
+﻿namespace BugTracker.BL.Exceptions
 {
-    public class EntityNotFoundException : BaseApplicationException
+    public class EntityNotFoundException : BugTrackerApplicationException
     {
-        public EntityNotFoundException(string message) : base(message, HttpStatusCode.NotFound)
+        public EntityNotFoundException(string message) : base(message)
         {
         }
     }

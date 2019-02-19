@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BugTracker.BL.Domain;
 using BugTracker.BL.Domain.Model;
+using BugTracker.BL.Exceptions;
 using BugTracker.BL.Operations.Issues.Commands;
 using BugTracker.BL.Operations.Issues.Commands.Abstract;
 using BugTracker.BL.Operations.Issues.Services;
@@ -13,13 +14,13 @@ namespace BugTracker.Api.Controllers
     public class IssuesController : Controller
     {
         private readonly IAddNoteToIssueOperationService _addNoteIssueOperationService;
-        private readonly ICreateIssueOperationService _createIssueOperationService;
-        private readonly IGetIssueOperationService _getIssueOperationService;
-        private readonly IRenameIssueOperationService _renameIssueOperationService;
 
         private readonly ICommandValidator<AddNoteToIssueCommand> _addNoteToIssueCommandValidator;
         private readonly ICommandValidator<CreateIssueCommand> _createIssueCommandValidator;
+        private readonly ICreateIssueOperationService _createIssueOperationService;
+        private readonly IGetIssueOperationService _getIssueOperationService;
         private readonly ICommandValidator<RenameIssueCommand> _renameIssueCommandValidator;
+        private readonly IRenameIssueOperationService _renameIssueOperationService;
 
         public IssuesController(ICreateIssueOperationService createIssueOperationService,
             IRenameIssueOperationService renameIssueIssueOperationService,
@@ -77,7 +78,7 @@ namespace BugTracker.Api.Controllers
                     _addNoteIssueOperationService.AddNote(command);
                     return NoContent();
                 default:
-                    return BadRequest("Unknown command in body");
+                    throw new UnknownCommandException();
             }
         }
     }

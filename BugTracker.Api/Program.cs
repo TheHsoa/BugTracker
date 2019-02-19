@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore;
+﻿using BugTracker.Api.Infrastructure.Logging;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace BugTracker.Api
@@ -10,8 +11,11 @@ namespace BugTracker.Api
             CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            return WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .ConfigureAndAddSerilog();
+        }
     }
 }
