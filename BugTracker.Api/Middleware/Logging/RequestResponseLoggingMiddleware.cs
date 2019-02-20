@@ -39,8 +39,6 @@ namespace BugTracker.Api.Middleware.Logging
             finally
             {
                 memStream.Position = 0;
-
-                memStream.Position = 0;
                 await memStream.CopyToAsync(originalBody);
                 sw.Stop();
 
