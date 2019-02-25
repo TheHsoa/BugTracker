@@ -123,10 +123,16 @@
   <data name="EntityPropertyLengthLessThan" xml:space="preserve">
     <value>{0} entity field "{1}" length must be less than {2} characters</value>
   </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>An error has occurred. Check the data and  if necessary repeat the operation. If the An error has occurred. Check the data and, if necessary, retry the operation. If the error recurs, contact the developers.</value>
+  </data>
   <data name="PropertyLengthLessThan" xml:space="preserve">
     <value>Length of the "{0}" field must be less than {1} characters</value>
   </data>
   <data name="PropertyMustNotBeNullOrEmpty" xml:space="preserve">
     <value>Field {0} must be specified</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>Unknown type of command in request body</value>
   </data>
 </root>

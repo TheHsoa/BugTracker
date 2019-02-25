@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
-using BugTracker.BL.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -10,8 +8,6 @@ namespace BugTracker.Api.Middleware.ErrorHandling
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next;
-
-        //private readonly ILogger<ErrorHandlingMiddleware> _logger;
 
         public ErrorHandlingMiddleware(RequestDelegate next)
         {
@@ -26,7 +22,6 @@ namespace BugTracker.Api.Middleware.ErrorHandling
             }
             catch (Exception ex)
             {
-               // _logger.LogError($"Something went wrong: {ex}");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
@@ -34,21 +29,13 @@ namespace BugTracker.Api.Middleware.ErrorHandling
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var response = context.Response;
-            var statusCode = HttpStatusCode.InternalServerError;
-            var message = "Unexpected error";
 
-            if (exception is BaseApplicationException customException)
-            {
-                message = customException.Message;
-                statusCode = customException.Code;
-            }
+            var exceptionDescription = exception.GetDescription();
 
             response.ContentType = "application/json";
-            response.StatusCode = (int) statusCode;
-            await response.WriteAsync(JsonConvert.SerializeObject(new
-            {
-                Message = message
-            }));
+            response.StatusCode = (int) exceptionDescription.Code;
+            await response.WriteAsync(
+                JsonConvert.SerializeObject(new ErrorResponseModel(exceptionDescription.Message)));
         }
     }
 }

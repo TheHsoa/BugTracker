@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Net;
 
 namespace BugTracker.BL.Exceptions
 {
-    public abstract class BaseApplicationException : Exception
+    public abstract class BugTrackerApplicationException : ApplicationException
     {
-        public HttpStatusCode Code { get; }
-
-        protected BaseApplicationException(string message, HttpStatusCode code) : base(message)
+        protected BugTrackerApplicationException(string message) : base(message)
         {
-            Code = code;
         }
     }
 }

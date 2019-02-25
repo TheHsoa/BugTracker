@@ -1,10 +1,8 @@
-﻿using System.Net;
-
-namespace BugTracker.BL.Exceptions
+﻿namespace BugTracker.BL.Exceptions
 {
-    public class CommandValidationException : BaseApplicationException
+    public class CommandValidationException : BugTrackerApplicationException
     {
-        public CommandValidationException(string message) : base(message, HttpStatusCode.BadRequest)
+        public CommandValidationException(string message) : base(message)
         {
         }
     }

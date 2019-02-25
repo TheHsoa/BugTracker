@@ -79,6 +79,15 @@ namespace BugTracker.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error has occurred. Check the data and  if necessary repeat the operation. If the An error has occurred. Check the data and, if necessary, retry the operation. If the error recurs, contact the developers..
+        /// </summary>
+        public static string InternalServerError {
+            get {
+                return ResourceManager.GetString("InternalServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Length of the &quot;{0}&quot; field must be less than {1} characters.
         /// </summary>
         public static string PropertyLengthLessThan {
@@ -93,6 +102,15 @@ namespace BugTracker.Resources {
         public static string PropertyMustNotBeNullOrEmpty {
             get {
                 return ResourceManager.GetString("PropertyMustNotBeNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown type of command in request body.
+        /// </summary>
+        public static string UnknownCommand {
+            get {
+                return ResourceManager.GetString("UnknownCommand", resourceCulture);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using BugTracker.Api.DI;
 using BugTracker.Api.Infrastructure.BinderProviders;
 using BugTracker.Api.Middleware.ErrorHandling;
+using BugTracker.Api.Middleware.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ namespace BugTracker.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(opts => opts.ModelBinderProviders.Add(new IssueCommandBinderProvider()))
+            services.AddMvc(opts => opts.ModelBinderProviders.Insert(0, new IssueCommandBinderProvider()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.ConfigureServices(Configuration);
         }
@@ -32,9 +33,10 @@ namespace BugTracker.Api
             else
                 app.UseHsts();
 
-            app.UseHttpsRedirection();
-            app.UseMiddleware<ErrorHandlingMiddleware>();
-            app.UseMvc();
+            app.UseHttpsRedirection()
+                .UseMiddleware<RequestResponseLoggingMiddleware>()
+                .UseMiddleware<ErrorHandlingMiddleware>()
+                .UseMvc();
         }
     }
 }
