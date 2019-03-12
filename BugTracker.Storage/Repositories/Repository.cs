@@ -15,7 +15,7 @@ namespace BugTracker.Storage.Repositories
             Context = context;
         }
 
-        public abstract long Create(TEntity entity);
+        public abstract EntityReference<TEntity> Add(TEntity entity);
         public abstract IEnumerable<TEntity> Get();
         public abstract TEntity Get(EntityReference<TEntity> id);
         public abstract void Update(TEntity entity);

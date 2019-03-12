@@ -1,4 +1,5 @@
 ﻿using System;
+using BugTracker.BL.Domain.Audit;
 using BugTracker.BL.Domain.Model.Abstract;
 
 namespace BugTracker.BL.Domain.Model
@@ -7,8 +8,10 @@ namespace BugTracker.BL.Domain.Model
     {
         public long Id { get; }
         
+        [AuditingProperty]
         public string Title { get; }
 
+        [AuditingProperty]
         public string Notes { get; }
 
         public DateTime CreatedOn { get; }
@@ -23,9 +26,9 @@ namespace BugTracker.BL.Domain.Model
             CreatedOn = createdOn;
             ModifiedOn = modifiedOn;
         }
+
         public Issue(string title, string notes, DateTime createdOn, DateTime modifiedOn)
         {
-            Id = 0;
             Title = title;
             Notes = notes;
             CreatedOn = createdOn;

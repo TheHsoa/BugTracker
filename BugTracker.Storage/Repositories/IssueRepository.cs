@@ -29,7 +29,7 @@ namespace BugTracker.Storage.Repositories
             Context.SaveChanges();
         }
 
-        public override long Create(Issue entity)
+        public override EntityReference<Issue> Add(Issue entity)
         {
             var newIssue = new PersistenceIssue
             {
@@ -43,7 +43,7 @@ namespace BugTracker.Storage.Repositories
 
             Context.SaveChanges();
 
-            return newIssue.Id;
+            return new EntityReference<Issue>(newIssue.Id);
         }
 
         public override IEnumerable<Issue> Get()

@@ -18,6 +18,7 @@ namespace BugTracker.Api.Controllers
         private readonly ICommandValidator<AddNoteToIssueCommand> _addNoteToIssueCommandValidator;
         private readonly ICommandValidator<CreateIssueCommand> _createIssueCommandValidator;
         private readonly ICreateIssueOperationService _createIssueOperationService;
+        private readonly IGetIssueChangesOperationService _getIssueChangesOperationService;
         private readonly IGetIssueOperationService _getIssueOperationService;
         private readonly ICommandValidator<RenameIssueCommand> _renameIssueCommandValidator;
         private readonly IRenameIssueOperationService _renameIssueOperationService;
@@ -26,6 +27,7 @@ namespace BugTracker.Api.Controllers
             IRenameIssueOperationService renameIssueIssueOperationService,
             IAddNoteToIssueOperationService addNoteIssueOperationService,
             IGetIssueOperationService getIssueOperationService,
+            IGetIssueChangesOperationService getIssueChangesOperationService,
             ICommandValidator<AddNoteToIssueCommand> addNoteToIssueCommandValidator,
             ICommandValidator<CreateIssueCommand> createIssueCommandValidator,
             ICommandValidator<RenameIssueCommand> renameIssueCommandValidator)
@@ -34,6 +36,8 @@ namespace BugTracker.Api.Controllers
             _renameIssueOperationService = renameIssueIssueOperationService;
             _addNoteIssueOperationService = addNoteIssueOperationService;
             _getIssueOperationService = getIssueOperationService;
+            _getIssueChangesOperationService = getIssueChangesOperationService;
+
             _addNoteToIssueCommandValidator = addNoteToIssueCommandValidator;
             _createIssueCommandValidator = createIssueCommandValidator;
             _renameIssueCommandValidator = renameIssueCommandValidator;
@@ -44,6 +48,14 @@ namespace BugTracker.Api.Controllers
         public ActionResult<Issue> Get(long id)
         {
             return _getIssueOperationService.Get(id.ToEntityReference<Issue>());
+        }
+
+        // GET a
+        // api/issues/changes/5
+        [HttpGet("changes/{id}")]
+        public ActionResult<IReadOnlyCollection<PerformedOperation>> GetChanges(long id)
+        {
+            return Ok(_getIssueChangesOperationService.GetChanges(id.ToEntityReference<Issue>()));
         }
 
         // GET api/issues
@@ -58,9 +70,9 @@ namespace BugTracker.Api.Controllers
         public ActionResult<Issue> Create(CreateIssueCommand createIssueCommand)
         {
             _createIssueCommandValidator.Validate(createIssueCommand);
-            var createdIssueId = _createIssueOperationService.Create(createIssueCommand);
+            var createdIssueReference = _createIssueOperationService.Create(createIssueCommand);
 
-            return Get(createdIssueId);
+            return Ok(_getIssueOperationService.Get(createdIssueReference));
         }
 
         // PATCH api/issues
